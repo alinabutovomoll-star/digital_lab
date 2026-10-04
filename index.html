@@ -1916,26 +1916,41 @@ section{border-bottom:none!important}
 }
 </style>
 
-<style id="v52-collapsible-sections">
-/* Compact services + portfolio with progressive disclosure */
-.products .product.is-collapsed-item,
-.productCases .productCase.is-collapsed-item{display:none}
-.products.is-expanded .product.is-collapsed-item{display:block}
-.productCases.is-expanded .productCase.is-collapsed-item{display:grid}
+<style id="v53-collapsible-sections">
+/* Compact services + portfolio with progressive disclosure. !important is intentional:
+   older mobile rules force cards to display:grid and otherwise override the collapsed state. */
+.products .product.is-collapsed-item{display:none!important}
+.products.is-expanded .product.is-collapsed-item{display:block!important}
+.productCases .productCase.is-collapsed-item{display:none!important}
+.productCases.is-expanded .productCase.is-collapsed-item{display:grid!important}
 .expand-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;flex-wrap:wrap}
 .expand-btn{appearance:none;border:1px solid rgba(243,235,224,.16);background:#0D171C;color:#F3EBE0;border-radius:999px;padding:15px 20px;font:800 13px/1 inherit;letter-spacing:.04em;cursor:pointer;transition:.25s ease;display:inline-flex;align-items:center;gap:10px}
 .expand-btn:hover{transform:translateY(-2px);border-color:rgba(183,121,79,.58);background:#111F25}
 .expand-btn .arrow{display:inline-block;transition:transform .28s ease}
 .expand-btn[aria-expanded="true"] .arrow{transform:rotate(180deg)}
+/* Services CTA gets the same wine accent as Instagram, while staying left-aligned. */
+.expand-btn[data-expand-target="servicesGrid"]{background:var(--wine);border-color:rgba(255,255,255,.08);color:#F3EBE0}
+.expand-btn[data-expand-target="servicesGrid"]:hover{background:var(--wine);filter:brightness(1.06);border-color:rgba(255,255,255,.12)}
 .ig-portfolio-link{display:inline-flex;align-items:center;gap:10px;color:#F3EBE0;text-decoration:none;font-size:13px;font-weight:800;letter-spacing:.02em;padding:15px 20px;border-radius:999px;background:var(--wine);border:1px solid rgba(255,255,255,.08);transition:.25s ease}
 .ig-portfolio-link:hover{transform:translateY(-2px);filter:brightness(1.06)}
 .ig-portfolio-link small{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.12em}
-@media(max-width:900px){
-  .productCases.is-expanded .productCase.is-collapsed-item{display:grid}
-}
 @media(max-width:560px){
-  .expand-row{align-items:stretch;flex-direction:column}
-  .expand-btn,.ig-portfolio-link{width:100%;justify-content:center;text-align:center}
+  .expand-row{align-items:flex-start;flex-direction:column}
+  .expand-btn{width:auto;max-width:100%;justify-content:flex-start;text-align:left}
+  .ig-portfolio-link{width:100%;justify-content:center;text-align:center}
+}
+
+/* Mobile-only advantages disclosure */
+.advantages-toggle-row{display:none}
+@media(max-width:760px){
+  .advantages-toggle-row{display:flex;justify-content:flex-start;margin:14px 0 2px}
+  .advantages-toggle-btn{appearance:none;border:1px solid rgba(255,255,255,.08);background:var(--wine);color:#F3EBE0;border-radius:999px;padding:15px 20px;font:800 13px/1 inherit;letter-spacing:.04em;cursor:pointer;display:inline-flex;align-items:center;justify-content:flex-start;gap:10px;text-align:left;transition:.25s ease}
+  .advantages-toggle-btn:active{transform:scale(.98)}
+  .advantages-toggle-btn .arrow{display:inline-block;transition:transform .28s ease}
+  .advantages-toggle-btn[aria-expanded="true"] .arrow{transform:rotate(180deg)}
+  .advantages-collapsible{display:none!important}
+  .advantages-collapsible.is-expanded{display:grid!important}
+  .valuebar.advantages-collapsible.is-expanded{display:grid!important}
 }
 </style>
 </head>
@@ -1973,8 +1988,8 @@ section{border-bottom:none!important}
 
 <div class="marquee"><div class="track"><span>САЙТЫ</span><b>✦</b><span>TELEGRAM-ПРОДУКТЫ</span><b>✦</b><span>АВТОМАТИЗАЦИЯ</span><b>✦</b><span>УПРАВЛЕНЧЕСКИЕ СИСТЕМЫ</span><b>✦</b><span>ПРЕЗЕНТАЦИИ</span><b>✦</b><span>САЙТЫ</span><b>✦</b><span>TELEGRAM-ПРОДУКТЫ</span><b>✦</b><span>АВТОМАТИЗАЦИЯ</span><b>✦</b><span>УПРАВЛЕНЧЕСКИЕ СИСТЕМЫ</span><b>✦</b><span>ПРЕЗЕНТАЦИИ</span><b>✦</b></div></div>
 
-<section><div class="w"><div class="section-head reveal"><div class="eyebrow">Почему Digital Lab</div><div><h2>Бизнесу нужен не ещё один подрядчик. Ему нужен результат.</h2><p>Когда нужен сайт, бот, приложение или система учёта, не хочется собирать команду из нескольких исполнителей. В Digital Lab нужные компетенции уже собраны в одном месте.</p></div></div><div class="problem-grid reveal"><div class="manifesto"><div class="big">Есть задача.<br><span>Нет времени объяснять её пяти людям.</span><br>И не должно быть.</div><p>Digital Lab берёт на себя разработку конкретного продукта: от постановки задачи и структуры до дизайна, сборки и передачи готовой версии.</p></div><div class="pain-list"><div class="pain"><b>Нужно быстро</b><span>Не растягиваем простой продукт на 2–3 месяца. Работаем короткими спринтами и показываем результат по ходу.</span></div><div class="pain"><b>Нужно качественно</b><span>Не собираем «лишь бы работало». Продумываем структуру, визуал, сценарии использования и техническую логику самого продукта.</span></div><div class="pain"><b>Нужна понятная цена</b><span>До старта фиксируем объём, этапы и бюджет. Без бесконечного увеличения сметы по дороге.</span></div></div></div>
-<div class="valuebar reveal"><div class="value"><strong>Дни, не месяцы</strong><span>короткий цикл запуска</span><p>Первые рабочие версии большинства проектов показываем уже в течение нескольких дней.</p></div><div class="value"><strong>1 команда</strong><span>вместо набора подрядчиков</span><p>Дизайн, разработка, автоматизация и системная сборка — в одной команде.</p></div><div class="value"><strong>Под ключ</strong><span>от идеи до готового продукта</span><p>Не требуем от клиента готового ТЗ. Сначала понимаем задачу, потом предлагаем подходящий формат продукта.</p></div></div>
+<section><div class="w"><div class="section-head reveal"><div class="eyebrow">Почему Digital Lab</div><div><h2>Бизнесу нужен не ещё один подрядчик. Ему нужен результат.</h2><p>Когда нужен сайт, бот, приложение или система учёта, не хочется собирать команду из нескольких исполнителей. В Digital Lab нужные компетенции уже собраны в одном месте.</p></div></div><div class="problem-grid reveal"><div class="manifesto"><div class="big">Есть задача.<br><span>Нет времени объяснять её пяти людям.</span><br>И не должно быть.</div><p>Digital Lab берёт на себя разработку конкретного продукта: от постановки задачи и структуры до дизайна, сборки и передачи готовой версии.</p></div><div class="advantages-toggle-row"><button class="advantages-toggle-btn" type="button" aria-expanded="false">Посмотреть все преимущества <span class="arrow">↓</span></button></div><div class="pain-list advantages-collapsible"><div class="pain"><b>Нужно быстро</b><span>Не растягиваем простой продукт на 2–3 месяца. Работаем короткими спринтами и показываем результат по ходу.</span></div><div class="pain"><b>Нужно качественно</b><span>Не собираем «лишь бы работало». Продумываем структуру, визуал, сценарии использования и техническую логику самого продукта.</span></div><div class="pain"><b>Нужна понятная цена</b><span>До старта фиксируем объём, этапы и бюджет. Без бесконечного увеличения сметы по дороге.</span></div></div></div>
+<div class="valuebar reveal advantages-collapsible"><div class="value"><strong>Дни, не месяцы</strong><span>короткий цикл запуска</span><p>Первые рабочие версии большинства проектов показываем уже в течение нескольких дней.</p></div><div class="value"><strong>1 команда</strong><span>вместо набора подрядчиков</span><p>Дизайн, разработка, автоматизация и системная сборка — в одной команде.</p></div><div class="value"><strong>Под ключ</strong><span>от идеи до готового продукта</span><p>Не требуем от клиента готового ТЗ. Сначала понимаем задачу, потом предлагаем подходящий формат продукта.</p></div></div>
 </div></section>
 
 <section id="products"><div class="w">
@@ -2317,6 +2332,26 @@ document.querySelectorAll('[data-gallery]').forEach(gallery=>{
         requestAnimationFrame(()=>target.querySelectorAll('.motion-left,.motion-right,.motion-up,.motion-scale').forEach(el=>el.classList.add('is-visible')));
       }
     });
+  });
+})();
+</script>
+
+<script id="v54-mobile-advantages-collapse">
+(()=>{
+  const btn=document.querySelector('.advantages-toggle-btn');
+  if(!btn) return;
+  const groups=[...document.querySelectorAll('.advantages-collapsible')];
+  const openLabel='Свернуть преимущества';
+  const closedLabel='Посмотреть все преимущества';
+  btn.addEventListener('click',()=>{
+    const isOpen=btn.getAttribute('aria-expanded')==='true';
+    const next=!isOpen;
+    groups.forEach(el=>el.classList.toggle('is-expanded',next));
+    btn.setAttribute('aria-expanded',String(next));
+    btn.childNodes[0].nodeValue=(next?openLabel:closedLabel)+' ';
+    if(next){
+      requestAnimationFrame(()=>groups.forEach(group=>group.querySelectorAll('.motion-left,.motion-right,.motion-up,.motion-scale').forEach(el=>el.classList.add('is-visible'))));
+    }
   });
 })();
 </script>
