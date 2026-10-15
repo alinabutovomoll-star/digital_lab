@@ -1513,3 +1513,5 @@ video.pd-photo { background: #000; }
 
 body.flow .foot-seo { flex-basis: 100%; margin: 10px 0 0; font-size: 12px; line-height: 1.5; color: #6b7483; max-width: 820px; }
 body.flow .foot { flex-wrap: wrap; }
+
+@media (max-width: 700px) { .flow-hero .hero-actions { margin-top: auto !important; } }
