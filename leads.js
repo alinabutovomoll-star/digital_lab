@@ -1,0 +1,117 @@
+/* Digital Lab: цели Метрики, форма заявки, липкая кнопка Telegram.
+   На прод не выкатывать, пока не заполнены TODO ниже и нет ок Алины. */
+(() => {
+  "use strict";
+
+  const CONFIG = {
+    // TODO(Алина): ID счётчика Яндекс.Метрики. Пока null: счётчик не грузится, цели только пишутся в консоль при ?debug_goals
+    YM_ID: null,
+    // TODO(Алина): адрес приёма заявок (POST JSON {name, contact, task, page}). Пока null: заявка уходит через Telegram-ссылку
+    FORM_ENDPOINT: null,
+    TG_URL: "https://t.me/alinaaa_ss",
+  };
+
+  const DEBUG = /[?&]debug_goals\b/.test(location.search);
+
+  // ---- Метрика ------------------------------------------------------------
+  if (CONFIG.YM_ID) {
+    window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
+    window.ym.l = Date.now();
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://mc.yandex.ru/metrika/tag.js";
+    document.head.appendChild(s);
+    window.ym(CONFIG.YM_ID, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: false });
+  }
+
+  // Цели: cta_click, form_submit, tg_click
+  function goal(name, params) {
+    try {
+      if (CONFIG.YM_ID && typeof window.ym === "function") window.ym(CONFIG.YM_ID, "reachGoal", name, params);
+    } catch (e) { /* аналитика не должна ломать сайт */ }
+    if (DEBUG) console.log("[goal]", name, params || "");
+  }
+  window.dlGoal = goal;
+
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (!a) return;
+    let names = (a.dataset.goal || "").split(/\s+/).filter(Boolean);
+    // любая ссылка на Telegram без разметки считается tg_click
+    if (!names.length && /^https:\/\/t\.me\//.test(a.getAttribute("href") || "")) names = ["tg_click"];
+    names.forEach((n) => goal(n, { place: a.dataset.place || "" }));
+  });
+
+  // ---- Подстановка услуги из карточек ------------------------------------
+  const form = document.getElementById("lead-form");
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-service]");
+    if (!a || !form) return;
+    const task = form.elements.task;
+    if (task && !task.value.trim()) task.value = "Услуга: " + a.dataset.service + ". ";
+  });
+
+  // ---- Форма --------------------------------------------------------------
+  if (form) {
+    const status = document.getElementById("leadStatus");
+    const say = (text, ok, html) => {
+      status.className = "lead-status " + (ok ? "is-ok" : "is-err");
+      if (html) status.innerHTML = html; else status.textContent = text;
+    };
+    const tgLink = (text) => CONFIG.TG_URL + "?text=" + encodeURIComponent(text);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (form.elements.website.value) return; // honeypot
+
+      const f = form.elements;
+      const data = { name: f.name.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href };
+      let bad = null;
+      for (const k of ["name", "contact", "task"]) {
+        const ok = data[k].length >= f[k].minLength;
+        f[k].setAttribute("aria-invalid", ok ? "false" : "true");
+        if (!ok && !bad) bad = f[k];
+      }
+      if (bad) { say("Заполните, пожалуйста, все поля.", false); bad.focus(); return; }
+
+      const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЗадача: " + data.task;
+
+      if (CONFIG.FORM_ENDPOINT) {
+        const btn = form.querySelector("button[type=submit]");
+        btn.disabled = true;
+        try {
+          const r = await fetch(CONFIG.FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+          if (!r.ok) throw new Error(r.status);
+          goal("form_submit");
+          form.reset();
+          say("Спасибо! Получили заявку, вернёмся с вариантом, сроком и ценой в рабочее время.", true);
+        } catch (err) {
+          say("", false, 'Не получилось отправить. Напишите нам <a href="' + tgLink(message) + '" target="_blank" rel="noopener">в Telegram</a>, ответим там.');
+        } finally { btn.disabled = false; }
+        return;
+      }
+
+      // Временный режим: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
+      const url = tgLink(message);
+      goal("form_submit", { mode: "telegram" });
+      const w = window.open(url, "_blank", "noopener");
+      say("", true, 'Открыли Telegram с готовой заявкой, нажмите «Отправить». Если окно не открылось, <a href="' + url + '" target="_blank" rel="noopener">откройте по ссылке</a>.');
+      if (!w) location.href = url;
+    });
+  }
+
+  // ---- Липкая кнопка: только телефон (CSS), скрыта на первом экране и у формы
+  const sticky = document.getElementById("stickyTg");
+  if (sticky && "IntersectionObserver" in window) {
+    sticky.hidden = false;
+    const watch = ["hero", "contact"].map((id) => document.getElementById(id)).filter(Boolean);
+    const seen = new Set();
+    const update = () => sticky.classList.toggle("is-off", seen.size > 0);
+    sticky.classList.add("is-off");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? seen.add(en.target.id) : seen.delete(en.target.id)));
+      update();
+    }, { threshold: 0.35 });
+    watch.forEach((el) => io.observe(el));
+  }
+})();
