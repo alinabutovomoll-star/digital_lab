@@ -132,7 +132,7 @@ void main(){
     if (document.hidden || document.querySelector("dialog[open]")) return;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform2f(U.R, canvas.width, canvas.height);
-    gl.uniform1f(U.S, scrollY * k);
+    gl.uniform1f(U.S, reduced ? 0 : scrollY * k);
     gl.uniform1f(U.T, reduced ? 4 : (now - t0) / 1000);
     gl.uniform1f(U.K, k);
     gl.uniform1f(U.M, mobile ? 1 : 0);
