@@ -6,8 +6,8 @@
   const CONFIG = {
     // TODO(Алина): ID счётчика Яндекс.Метрики. Пока null: счётчик не грузится, цели только пишутся в консоль при ?debug_goals
     YM_ID: null,
-    // TODO(Алина): адрес приёма заявок (POST JSON {name, contact, task, page}). Пока null: заявка уходит через Telegram-ссылку
-    FORM_ENDPOINT: null,
+    // Vercel-функция api/lead.js (Илья). При ошибке или недоступности открываем Telegram с текстом заявки
+    FORM_ENDPOINT: "/api/lead",
     TG_URL: "https://t.me/alinaaa_ss",
   };
 
@@ -76,27 +76,35 @@
 
       const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЗадача: " + data.task;
 
+      // Резервный путь: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
+      const openTelegram = (note) => {
+        const url = tgLink(message);
+        goal("form_submit", { mode: "telegram" });
+        const w = window.open(url, "_blank", "noopener");
+        say("", true, note + ' Если окно не открылось, <a href="' + url + '" target="_blank" rel="noopener">откройте по ссылке</a>.');
+        if (!w) location.href = url;
+      };
+
       if (CONFIG.FORM_ENDPOINT) {
         const btn = form.querySelector("button[type=submit]");
         btn.disabled = true;
         try {
-          const r = await fetch(CONFIG.FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+          const ctl = new AbortController();
+          const timer = setTimeout(() => ctl.abort(), 10000);
+          const r = await fetch(CONFIG.FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ website: "" }, data)), signal: ctl.signal });
+          clearTimeout(timer);
           if (!r.ok) throw new Error(r.status);
           goal("form_submit");
           form.reset();
           say("Спасибо! Получили заявку, вернёмся с вариантом, сроком и ценой в рабочее время.", true);
         } catch (err) {
-          say("", false, 'Не получилось отправить. Напишите нам <a href="' + tgLink(message) + '" target="_blank" rel="noopener">в Telegram</a>, ответим там.');
+          // endpoint недоступен или вернул ошибку: не теряем заявку
+          openTelegram("Форма сейчас недоступна, открыли Telegram с готовой заявкой, нажмите «Отправить».");
         } finally { btn.disabled = false; }
         return;
       }
 
-      // Временный режим: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
-      const url = tgLink(message);
-      goal("form_submit", { mode: "telegram" });
-      const w = window.open(url, "_blank", "noopener");
-      say("", true, 'Открыли Telegram с готовой заявкой, нажмите «Отправить». Если окно не открылось, <a href="' + url + '" target="_blank" rel="noopener">откройте по ссылке</a>.');
-      if (!w) location.href = url;
+      openTelegram("Открыли Telegram с готовой заявкой, нажмите «Отправить».");
     });
   }
 
