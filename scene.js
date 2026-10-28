@@ -25,13 +25,13 @@ try {
   ec.width = 2048;
   ec.height = 1024;
   const ctx = ec.getContext("2d");
-  ctx.fillStyle = "#11151d";
+  ctx.fillStyle = "#0b0e18";
   ctx.fillRect(0, 0, 2048, 1024);
   const grad = ctx.createLinearGradient(0, 0, 0, 1024);
   grad.addColorStop(0, "#dbdbdb");
   grad.addColorStop(0.35, "#4a5568");
-  grad.addColorStop(0.5, "#0b0e14");
-  grad.addColorStop(0.75, "#5c8bff");
+  grad.addColorStop(0.5, "#06080f");
+  grad.addColorStop(0.75, "#7088ff");
   grad.addColorStop(1, "#f3f2f5");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 2048, 1024);
@@ -39,13 +39,13 @@ try {
     [100, 80, "#f3f1e9"],
     [540, 220, "#dbdbdb"],
     [1140, 45, "#ffffff"],
-    [1650, 180, "#5c8bff"],
+    [1650, 180, "#7088ff"],
   ]) {
     const g = ctx.createLinearGradient(x - 40, 0, x + w + 40, 0);
-    g.addColorStop(0, "#161b24");
+    g.addColorStop(0, "#121728");
     g.addColorStop(0.25, c);
     g.addColorStop(0.75, c);
-    g.addColorStop(1, "#161b24");
+    g.addColorStop(1, "#121728");
     ctx.fillStyle = g;
     ctx.fillRect(x - 40, 50, w + 80, 800);
   }
@@ -60,10 +60,10 @@ try {
   const key = new THREE.DirectionalLight(0xf3f1e9, 5);
   key.position.set(-4, 7, 8);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x2f6bff, 6);
+  const rim = new THREE.DirectionalLight(0x2443f0, 6);
   rim.position.set(5, 1, -2);
   scene.add(rim);
-  const red = new THREE.PointLight(0x2f6bff, 30, 15);
+  const red = new THREE.PointLight(0x2443f0, 30, 15);
   red.position.set(-3, -3, 3);
   scene.add(red);
   const pearl = new THREE.MeshPhysicalMaterial({
@@ -74,19 +74,19 @@ try {
     clearcoatRoughness: 0.12,
   });
   const mint = new THREE.MeshPhysicalMaterial({
-    color: 0x2f6bff,
+    color: 0x2443f0,
     metalness: 0.75,
     roughness: 0.21,
     clearcoat: 1,
   });
   const wine = new THREE.MeshPhysicalMaterial({
-    color: 0xff6a3d,
-    metalness: 0.68,
-    roughness: 0.22,
+    color: 0xdb5c0c,
+    metalness: 0.38,
+    roughness: 0.26,
     clearcoat: 1,
   });
   const dark = new THREE.MeshPhysicalMaterial({
-    color: 0x161b24,
+    color: 0x121728,
     metalness: 0.85,
     roughness: 0.19,
     clearcoat: 1,
@@ -150,7 +150,7 @@ try {
   const ribbon = new THREE.Mesh(
     new THREE.TorusKnotGeometry(1.2, 0.095, 220, 16, 2, 3),
     new THREE.MeshPhysicalMaterial({
-      color: 0x2f6bff,
+      color: 0x2443f0,
       metalness: 1,
       roughness: 0.21,
       transparent: true,
@@ -179,7 +179,7 @@ try {
     const line = new THREE.Mesh(
       new THREE.TubeGeometry(curve, 60, 0.008, 6, false),
       new THREE.MeshBasicMaterial({
-        color: i === 1 ? 0xe2dfce : 0x2f6bff,
+        color: i === 1 ? 0xe2dfce : 0x2443f0,
         transparent: true,
         opacity: 0,
       }),
@@ -280,8 +280,8 @@ try {
     ribbon.rotation.set(0.2 + p * 0.1, 0.4 + p * 0.25 + free, 0.3 + p * 0.2);
     ribbon.material.opacity = 0.14 * (1 - trans * 0.5);
     // The 2D thread layer draws the "web" along this knot; keep the mesh as its guide.
-    ribbon.visible = !window.labThreadReady;
-    connectors.visible = !m;
+    ribbon.visible = false;
+    connectors.visible = false;
     connectorLines.forEach((line, i) => {
       line.material.opacity = trans * mid * 0.35;
       line.position.y = Math.sin(p * 1.3 + i) * 0.13;
