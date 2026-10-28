@@ -48,7 +48,10 @@
     const a = e.target.closest("a[data-service]");
     if (!a || !form) return;
     const task = form.elements.task;
-    if (task && !task.value.trim()) task.value = "Услуга: " + a.dataset.service + ". ";
+    if (!task) return;
+    // подставленная ранее услуга заменяется, текст пользователя после неё сохраняется
+    const rest = task.value.replace(/^Услуга: .*?\.\s/, "");
+    task.value = "Услуга: " + a.dataset.service + ". " + rest;
   });
 
   // ---- Форма --------------------------------------------------------------
@@ -77,12 +80,23 @@
       const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЗадача: " + data.task;
 
       // Резервный путь: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
+      // Ссылка открывается по клику посетителя (жест пользователя), без window.open после await:
+      // Safari/iOS такое блокирует. Со страницы не уходим, форму очищаем.
       const openTelegram = (note) => {
         const url = tgLink(message);
         goal("form_submit", { mode: "telegram" });
-        const w = window.open(url, "_blank", "noopener");
-        say("", true, note + ' Если окно не открылось, <a href="' + url + '" target="_blank" rel="noopener">откройте по ссылке</a>.');
-        if (!w) location.href = url;
+        say("", true, "");
+        status.textContent = "";
+        const p = document.createElement("span");
+        p.textContent = note + " ";
+        const a = document.createElement("a");
+        a.href = url; a.target = "_blank"; a.rel = "noopener";
+        a.className = "btn primary lead-open";
+        a.textContent = "Открыть Telegram";
+        a.dataset.goal = "tg_click"; a.dataset.place = "form-fallback";
+        status.append(p, document.createElement("br"), a);
+        form.reset();
+        a.focus();
       };
 
       if (CONFIG.FORM_ENDPOINT) {
@@ -99,12 +113,12 @@
           say("Спасибо! Получили заявку, вернёмся с вариантом, сроком и ценой в рабочее время.", true);
         } catch (err) {
           // endpoint недоступен или вернул ошибку: не теряем заявку
-          openTelegram("Форма сейчас недоступна, открыли Telegram с готовой заявкой, нажмите «Отправить».");
+          openTelegram("Форма сейчас недоступна, но заявка не потеряна: нажмите кнопку, откроется Telegram с готовым текстом, останется нажать «Отправить».");
         } finally { btn.disabled = false; }
         return;
       }
 
-      openTelegram("Открыли Telegram с готовой заявкой, нажмите «Отправить».");
+      openTelegram("Нажмите кнопку: откроется Telegram с готовым текстом заявки, останется нажать «Отправить».");
     });
   }
 
