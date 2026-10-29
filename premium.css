@@ -62,7 +62,7 @@ body.flow .nav {
 
 /* ---- Кнопки: сапфир с бликом ------------------------------------------- */
 body.flow .btn.primary, body.flow .pill.primary, body.flow .btn.wine, body.flow .dialog-cta,
-body.flow #products .price-folder .folder-content a {
+body.flow :is(#products, #turnkey) .price-folder .folder-content a {
   background: linear-gradient(180deg, #3d5cff 0%, var(--sapphire) 48%, var(--sapphire-deep) 100%) !important;
   border-color: rgba(140, 160, 255, 0.45) !important;
   color: #fff !important;
@@ -121,22 +121,22 @@ body.flow section .section-head .eyebrow::before, .flow-eyebrow i,
 .flow-card-num { background: linear-gradient(180deg, #7088ff, rgba(36, 67, 240, 0) 90%) !important; -webkit-background-clip: text !important; background-clip: text !important; }
 
 /* ---- Светлые блоки: слоновая кость вместо холодного белого --------------- */
-body.flow #products, body.flow #faq {
+body.flow :is(#products, #turnkey), body.flow #faq {
   background:
     radial-gradient(90% 60% at 85% 0%, rgba(36, 67, 240, 0.06), transparent 60%),
     linear-gradient(180deg, #f6f4ef 0%, #f1eee7 100%) !important;
   box-shadow: 0 -30px 80px -40px rgba(0, 0, 0, 0.6), 0 30px 80px -40px rgba(0, 0, 0, 0.6);
 }
-body.flow #products .price-folder,
+body.flow :is(#products, #turnkey) .price-folder,
 body.flow #faq .faq-item {
   background: #fffefb !important;
   border-color: #e7e2d8 !important;
   box-shadow: 0 1px 2px rgba(20, 16, 8, 0.04), 0 16px 36px -24px rgba(20, 16, 8, 0.18) !important;
 }
-body.flow #products .price-folder:hover, body.flow #products .price-folder[open],
+body.flow :is(#products, #turnkey) .price-folder:hover, body.flow :is(#products, #turnkey) .price-folder[open],
 body.flow #faq .faq-item[open] { border-color: rgba(36, 67, 240, 0.45) !important; }
-body.flow #products .price-folder .folder-content article { background: #f7f5f0 !important; border-color: #ebe6dc !important; }
-body.flow #products .price-folder .folder-number { background: rgba(36, 67, 240, 0.08) !important; }
+body.flow :is(#products, #turnkey) .price-folder .folder-content article { background: #f7f5f0 !important; border-color: #ebe6dc !important; }
+body.flow :is(#products, #turnkey) .price-folder .folder-number { background: rgba(36, 67, 240, 0.08) !important; }
 
 /* ---- Портфолио: глубина и мягкое свечение ------------------------------- */
 .case-cover { border-color: rgba(112, 136, 255, 0.18) !important; box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.04); }
@@ -169,37 +169,37 @@ body.flow .cta h2 span {
 }
 
 /* ---- Стоимость: раскрытая папка горит янтарём ---------------------------- */
-body.flow #products .price-folder { position: relative; transition: border-color .4s, box-shadow .5s, transform .5s cubic-bezier(.16,1,.3,1) !important; }
-body.flow #products .price-folder::before {
+body.flow :is(#products, #turnkey) .price-folder { position: relative; transition: border-color .4s, box-shadow .5s, transform .5s cubic-bezier(.16,1,.3,1) !important; }
+body.flow :is(#products, #turnkey) .price-folder::before {
   background: linear-gradient(180deg, #ff8a3d, #ea6a25 55%, #2443f0) !important;
   width: 4px !important;
 }
-body.flow #products .price-folder:hover { border-color: rgba(234, 106, 37, 0.45) !important; transform: translateY(-2px); }
-body.flow #products .price-folder[open] {
+body.flow :is(#products, #turnkey) .price-folder:hover { border-color: rgba(234, 106, 37, 0.45) !important; transform: translateY(-2px); }
+body.flow :is(#products, #turnkey) .price-folder[open] {
   border-color: rgba(234, 106, 37, 0.7) !important;
   box-shadow: 0 0 0 4px rgba(234, 106, 37, 0.08), 0 26px 50px -28px rgba(234, 106, 37, 0.45) !important;
 }
-body.flow #products .price-folder .folder-plus { color: var(--amber) !important; transition: transform .45s cubic-bezier(.16,1,.3,1), color .3s !important; }
-body.flow #products .price-folder .folder-number {
+body.flow :is(#products, #turnkey) .price-folder .folder-plus { color: var(--amber) !important; transition: transform .45s cubic-bezier(.16,1,.3,1), color .3s !important; }
+body.flow :is(#products, #turnkey) .price-folder .folder-number {
   color: #c2410c !important; background: rgba(234, 106, 37, 0.10) !important;
 }
-body.flow #products .price-folder[open] .folder-number { color: #fff !important; background: linear-gradient(135deg, #ff8a3d, #ea6a25) !important; }
-body.flow #products .price-folder[open] .folder-price { color: #d4560f !important; }
-body.flow #products .price-folder .folder-content article {
+body.flow :is(#products, #turnkey) .price-folder[open] .folder-number { color: #fff !important; background: linear-gradient(135deg, #ff8a3d, #ea6a25) !important; }
+body.flow :is(#products, #turnkey) .price-folder[open] .folder-price { color: #d4560f !important; }
+body.flow :is(#products, #turnkey) .price-folder .folder-content article {
   position: relative; overflow: hidden;
   transition: border-color .35s, transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s !important;
 }
-body.flow #products .price-folder .folder-content article::before {
+body.flow :is(#products, #turnkey) .price-folder .folder-content article::before {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
   background: linear-gradient(90deg, #ea6a25, #ff9a55 40%, #2443f0);
 }
-body.flow #products .price-folder .folder-content article:hover {
+body.flow :is(#products, #turnkey) .price-folder .folder-content article:hover {
   border-color: rgba(234, 106, 37, 0.45) !important; transform: translateY(-3px);
   box-shadow: 0 22px 40px -26px rgba(234, 106, 37, 0.5);
 }
-body.flow #products .price-folder .folder-content strong { color: #d4560f !important; }
-body.flow #products .price-folder .folder-content article > span { color: #2443f0 !important; font-weight: 600; }
-body.flow #products .price-folder[open] .folder-content { animation: folderIn .7s cubic-bezier(.16,1,.3,1) both; }
+body.flow :is(#products, #turnkey) .price-folder .folder-content strong { color: #d4560f !important; }
+body.flow :is(#products, #turnkey) .price-folder .folder-content article > span { color: #2443f0 !important; font-weight: 600; }
+body.flow :is(#products, #turnkey) .price-folder[open] .folder-content { animation: folderIn .7s cubic-bezier(.16,1,.3,1) both; }
 @keyframes folderIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 
 /* ---- FAQ: янтарный плюс и подсветка открытого ---------------------------- */
@@ -230,3 +230,42 @@ body.flow section .section-head .eyebrow::before, .flow-eyebrow i {
   width: 34px !important; height: 2px !important;
 }
 @media (max-width: 700px) { .flow-layers > .mercury-layer { opacity: .72; } }
+
+/* ---- v4-minimal: точечные правки ------------------------------------- */
+html body.flow:not(#v4) .btn--estimate,
+html body.flow:not(#v4) .nav-estimate {
+  background: #EA6A25 !important; border-color: #EA6A25 !important; color: #06080F !important;
+  box-shadow: none !important; font-weight: 700;
+}
+html body.flow:not(#v4) .btn--estimate::after,
+html body.flow:not(#v4) .nav-estimate::after { display: none !important; }
+html body.flow:not(#v4) .btn--estimate:hover,
+html body.flow:not(#v4) .nav-estimate:hover { background: #FF8A3D !important; border-color: #FF8A3D !important; color: #06080F !important; }
+html body.flow:not(#v4) .btn--estimate[disabled] { opacity: .45; cursor: not-allowed; }
+.turnkey-list { margin: 0 0 6px; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; line-height: 1.5; }
+.lead-title { margin: 40px 0 18px; font-size: clamp(22px, 2.4vw, 30px); font-weight: 600; letter-spacing: -.02em; }
+.lead-note { font-size: 13px; opacity: .75; }
+.lead-form { max-width: 640px; margin: 0 auto; text-align: left; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: 28px; padding: 32px; display: grid; gap: 18px; }
+.lead-form label { display: grid; gap: 8px; font-size: 14px; font-weight: 500; }
+.lead-form input, .lead-form textarea { width: 100%; font: inherit; font-size: 16px; line-height: 1.4; color: #f3f2f5; background: #0b0e18; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; padding: 14px 16px; }
+.lead-form textarea { min-height: 110px; resize: vertical; }
+.lead-form input:focus-visible, .lead-form textarea:focus-visible { outline: 2px solid #7088FF; outline-offset: 2px; }
+.lead-form [aria-invalid="true"] { border-color: #FF6B6B; }
+.lead-opt { opacity: .6; font-weight: 400; }
+.lead-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
+.lead-form .lead-check { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; font-weight: 400; line-height: 1.5; cursor: pointer; }
+.lead-check input { width: 20px; height: 20px; flex: none; margin: 1px 0 0; padding: 0; accent-color: #EA6A25; cursor: pointer; }
+.lead-check a { color: #7088FF; text-decoration: underline; text-underline-offset: 3px; }
+.lead-check.is-bad { color: #FF9B9B; }
+.lead-status { margin: 0; font-size: 15px; line-height: 1.5; }
+.lead-status:empty { display: none; }
+.lead-status.is-ok { color: #8FE3B0; } .lead-status.is-err { color: #FF9B9B; }
+.lead-status a { text-decoration: underline; }
+.lead-status .lead-open { display: inline-block; margin-top: 12px; text-decoration: none; }
+.lead-submit { max-width: 640px; margin: 20px auto 0; display: flex; justify-content: center; }
+.lead-submit .btn { min-width: 260px; cursor: pointer; }
+@media (max-width: 560px) { .lead-form { padding: 22px; border-radius: 22px; } .lead-submit .btn { width: 100%; } }
+@media (min-width: 1001px) {
+  body.flow .founder-profile { align-items: stretch; }
+}
+@media (prefers-reduced-motion: reduce) { .marquee, .marquee * { animation: none !important; } }

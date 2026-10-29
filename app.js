@@ -279,9 +279,9 @@ function showImage() {
     const src = `assets/${list[index].slice(6)}.mp4`;
     const holder = $("#gallery-image");
     const v = document.createElement("video");
-    Object.assign(v, { src, controls: true, autoplay: true, muted: false, loop: true, playsInline: true, poster: `assets/${list[index].slice(6)}-poster.jpg` });
+    Object.assign(v, { src, controls: true, autoplay: !reduced.matches, muted: false, loop: true, playsInline: true, poster: `assets/${list[index].slice(6)}-poster.jpg` });
     v.volume = 0.6;
-    v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+    if (!reduced.matches) v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
     v.id = "gallery-image";
     v.className = "pd-photo";
     holder.replaceWith(v);
