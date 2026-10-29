@@ -232,22 +232,81 @@ body.flow section .section-head .eyebrow::before, .flow-eyebrow i {
 @media (max-width: 700px) { .flow-layers > .mercury-layer { opacity: .72; } }
 
 /* ---- v4-minimal: точечные правки ------------------------------------- */
-html body.flow:not(#v4) .btn--estimate,
-html body.flow:not(#v4) .nav-estimate {
-  background: #EA6A25 !important; border-color: #EA6A25 !important; color: #06080F !important;
-  box-shadow: none !important; font-weight: 700;
+/* ---- Единая система кнопок: одна геометрия и анимация, различается только цвет ---- */
+/* анимации как на основном сайте: подъём на 2px при наведении + блик, пробегающий слева направо */
+html body.flow:not(#v4):not(#v4) :is(.btn, .pill, #products .price-folder .folder-content a) {
+  position: relative !important; overflow: hidden !important;
+  align-items: center !important; justify-content: center !important; gap: 10px !important;
+  padding: 14px 19px !important; border-radius: 999px !important;
+  border: 1px solid transparent !important;
+  font-family: inherit !important; font-weight: 750 !important; font-size: 14px !important; line-height: 1.2 !important; letter-spacing: 0 !important; text-decoration: none !important; text-transform: none !important;
+  width: auto; min-height: 0 !important; cursor: pointer;
+  transition: transform .25s, background .25s, border-color .25s, box-shadow .25s !important;
 }
-html body.flow:not(#v4) .btn--estimate::after,
-html body.flow:not(#v4) .nav-estimate::after { display: none !important; }
-html body.flow:not(#v4) .btn--estimate:hover,
-html body.flow:not(#v4) .nav-estimate:hover { background: #FF8A3D !important; border-color: #FF8A3D !important; color: #06080F !important; }
-html body.flow:not(#v4) .btn--estimate[disabled] { opacity: .45; cursor: not-allowed; }
+html body.flow:not(#v4):not(#v4) :is(.btn, #products .price-folder .folder-content a) { display: inline-flex !important; }
+html body.flow:not(#v4):not(#v4) .pill { padding: 12px 18px !important; }
+html body.flow:not(#v4):not(#v4) :is(.btn, .pill, .dialog-cta, #products .price-folder .folder-content a)::after {
+  content: "" !important; position: absolute; inset: 0; display: block !important;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .9s cubic-bezier(.16, 1, .3, 1);
+  pointer-events: none;
+}
+html body.flow:not(#v4):not(#v4) :is(.btn, .pill, .dialog-cta, #products .price-folder .folder-content a):hover::after { transform: translateX(120%); }
+html body.flow:not(#v4):not(#v4) :is(.btn, .pill, #products .price-folder .folder-content a):hover { transform: translateY(-2px) !important; }
+html body.flow:not(#v4):not(#v4) :is(.btn, .pill, .dialog-cta, #products .price-folder .folder-content a):active { transform: translateY(0) !important; }
+html body.flow:not(#v4):not(#v4) :is(.btn, .pill, .dialog-cta, #products .price-folder .folder-content a):focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* стекло: Telegram в hero, «Портфолио в Instagram», «Обсудить» вне рекомендованного пакета */
+html body.flow:not(#v4):not(#v4) .btn:not(.primary):not(.wine):not(.btn--estimate) {
+  background: rgba(255, 255, 255, 0.05) !important; border-color: rgba(255, 255, 255, 0.3) !important; color: #fff !important;
+  backdrop-filter: blur(10px); box-shadow: none !important;
+}
+html body.flow:not(#v4):not(#v4) .btn:not(.primary):not(.wine):not(.btn--estimate):hover {
+  background: rgba(255, 255, 255, 0.1) !important; border-color: rgba(255, 138, 61, 0.7) !important;
+}
+/* синяя: «Изучить стоимость», «Написать в Telegram» (внизу), ссылки в папках продуктов, fallback формы */
+html body.flow:not(#v4):not(#v4) :is(.btn.primary:not(.btn--estimate), .btn.wine, .pill.primary:not(.nav-estimate), #products .price-folder .folder-content a) {
+  background: linear-gradient(180deg, #3d5cff 0%, #2443f0 48%, #1d36d2 100%) !important;
+  border-color: rgba(140, 160, 255, 0.45) !important; color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 14px 34px -14px rgba(36, 67, 240, 0.85) !important;
+}
+html body.flow:not(#v4):not(#v4) :is(.btn.primary:not(.btn--estimate), .btn.wine, .pill.primary:not(.nav-estimate), #products .price-folder .folder-content a):hover {
+  background: linear-gradient(180deg, #4a68ff 0%, #2c4cf6 48%, #1d36d2 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 18px 44px -14px rgba(36, 67, 240, 1) !important;
+}
+/* оранжевая: «Получить оценку» везде. Тёмный текст даёт контраст 6.2:1 (белый на оранжевом был бы 3.4:1) */
+html body.flow:not(#v4):not(#v4) :is(.btn--estimate, .nav-estimate) {
+  background: linear-gradient(180deg, #ff8a3d 0%, #ea6a25 100%) !important;
+  border-color: #ea6a25 !important; color: #06080f !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 14px 34px -14px rgba(234, 106, 37, 0.8) !important;
+}
+html body.flow:not(#v4):not(#v4) :is(.btn--estimate, .nav-estimate):hover {
+  background: linear-gradient(180deg, #ff9d57 0%, #f77a30 100%) !important; border-color: #ff8a3d !important; color: #06080f !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 18px 44px -14px rgba(255, 138, 61, 0.95) !important;
+}
+html body.flow:not(#v4):not(#v4) .btn--estimate[disabled] { opacity: .45; cursor: not-allowed; }
+html body.flow:not(#v4):not(#v4) .lead-form .lead-submit .btn { width: 100%; }
+html body.flow:not(#v4):not(#v4) .pkg .btn { align-self: flex-start; }
+
+/* Бизнес под ключ: без светлой подложки, секция лежит на тёмном фоне страницы */
+html body.flow:not(#v4) #turnkey, html body.flow:not(#v4) #turnkey > .w, html body.flow:not(#v4) #turnkey .section-head, html body.flow:not(#v4) #turnkey .pkg-grid {
+  background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; margin-inline: 0; color: #f4f2ed;
+}
+html body.flow:not(#v4) #turnkey h2 { color: #f4f2ed !important; }
+html body.flow:not(#v4) #turnkey .section-head p { color: #9aa3b2 !important; }
+html body.flow:not(#v4) #turnkey .eyebrow { color: #c5cbd5 !important; }
+html body.flow:not(#v4) #turnkey .pkg h3, html body.flow:not(#v4) #turnkey .pkg-price { color: #f4f2ed !important; }
+html body.flow:not(#v4) #turnkey .pkg { background: #0e1220 !important; }
+
+/* форма: крупное общее поле */
+.lead-form textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
+.lead-form .lead-big textarea { min-height: 170px; }
 .lead-title { margin: 40px 0 18px; font-size: clamp(22px, 2.4vw, 30px); font-weight: 600; letter-spacing: -.02em; }
 .lead-note { font-size: 13px; opacity: .75; }
 .lead-form { max-width: 640px; margin: 0 auto; text-align: left; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: 28px; padding: 32px; display: grid; gap: 18px; }
 .lead-form label { display: grid; gap: 8px; font-size: 14px; font-weight: 500; }
 .lead-form input, .lead-form textarea { width: 100%; font: inherit; font-size: 16px; line-height: 1.4; color: #f3f2f5; background: #0b0e18; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; padding: 14px 16px; }
-.lead-form textarea { min-height: 110px; resize: vertical; }
 .lead-form input:focus-visible, .lead-form textarea:focus-visible { outline: 2px solid #7088FF; outline-offset: 2px; }
 .lead-form [aria-invalid="true"] { border-color: #FF6B6B; }
 .lead-opt { opacity: .6; font-weight: 400; }

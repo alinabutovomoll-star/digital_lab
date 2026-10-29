@@ -60,7 +60,7 @@
       if (form.elements.website.value) return; // honeypot
 
       const f = form.elements;
-      const data = { name: f.name.value.trim(), business: f.business.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href, consent: f.consent.checked };
+      const data = { name: f.name.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href, consent: f.consent.checked };
       let bad = null;
       for (const k of ["name", "contact"]) {
         const ok = data[k].length >= f[k].minLength;
@@ -72,7 +72,7 @@
       if (bad) { say("Заполните, пожалуйста, имя и контакт (Telegram или телефон).", false); bad.focus(); return; }
       if (!data.consent) { say("Отметьте согласие на обработку персональных данных, чтобы отправить заявку.", false); f.consent.focus(); return; }
 
-      const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЧем занимаются: " + (data.business || "не указано") + "\nЗапрос: " + (data.task || "не указано");
+      const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЧем занимаются и запрос: " + (data.task || "не указано");
 
       // Резервный путь: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
       // Ссылка открывается по клику посетителя (жест пользователя), без window.open после await:

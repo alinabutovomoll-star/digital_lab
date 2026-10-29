@@ -112,7 +112,7 @@ body.flow footer {
 }
 #hero { --acc: var(--ice); --acc2: var(--lilac); }
 #why { --acc: var(--apricot); --acc2: var(--rose); }
-:is(#products, #turnkey) { --acc: var(--lilac); --acc2: var(--ice); }
+#products { --acc: var(--lilac); --acc2: var(--ice); }
 #works { --acc: var(--ice); --acc2: var(--rose); }
 #how { --acc: var(--rose); --acc2: var(--apricot); }
 #team { --acc: var(--apricot); --acc2: var(--lilac); }
@@ -448,7 +448,7 @@ body.flow .expertise-panel > span { color: var(--apricot) !important; }
 body.flow .founder-label { color: var(--apricot) !important; }
 
 /* ---- hidden logo cubes (mini-game) -------------------------------------- */
-:is(#products, #turnkey) .w,
+#products .w,
 #works .w,
 .faq > div:first-child {
   position: relative;
@@ -487,7 +487,7 @@ body.flow .founder-label { color: var(--apricot) !important; }
   animation: none !important;
   pointer-events: none;
 }
-:is(#products, #turnkey) .lab-cube { right: 6px; bottom: -8px; }
+#products .lab-cube { right: 6px; bottom: -8px; }
 #works .lab-cube { right: 26px; bottom: 112px; }
 .faq .lab-cube { position: relative; display: block; margin: 26px 0 0 4px; }
 @keyframes cubeFloat {
@@ -1088,7 +1088,7 @@ body.flow .founder-copy p { color: #fff !important; }
   --silver: #c9ced6;
   --mute2: #8a8f98;
 }
-#hero, #why, :is(#products, #turnkey), #works, #how, #team, #faq, #contact,
+#hero, #why, #products, #works, #how, #team, #faq, #contact,
 [data-why], [data-step], .folder-web, .folder-telegram, .folder-systems, .folder-design, .folder-custom,
 .case-web, .case-app, .case-payment, .case-bot, .case-system { --acc: #a9c4dc !important; --acc2: #ffffff !important; }
 .guide, body[data-section] .guide { --guide-acc: #a9c4dc !important; }
@@ -1222,7 +1222,7 @@ body.flow .case-cover { background: #111216 !important; }
 }
 #hero, #why, #works, #how, #team, #contact,
 [data-why], [data-step], .case-web, .case-app, .case-payment, .case-bot, .case-system { --acc: #7088ff !important; --acc2: #ffffff !important; }
-:is(#products, #turnkey), #faq, .folder-web, .folder-telegram, .folder-systems, .folder-design, .folder-custom { --acc: #2443f0 !important; --acc2: #06080f !important; }
+#products, #faq, .folder-web, .folder-telegram, .folder-systems, .folder-design, .folder-custom { --acc: #2443f0 !important; --acc2: #06080f !important; }
 .guide, body[data-section] .guide { --guide-acc: #2443f0 !important; }
 body.flow, html { background: var(--g-900) !important; }
 body.flow .nav { background: #06080fe6 !important; border-color: #ffffff1a !important; }
@@ -1267,34 +1267,34 @@ body.flow .btn:not(.primary):not(.wine) { border-color: #ffffff3a !important; co
 .flow-card p { color: #c5cbd5 !important; }
 
 /* ---------- Light sections: prices and questions ---------- */
-body.flow :is(#products, #turnkey), body.flow #faq {
+body.flow #products, body.flow #faq {
   background: var(--cloud) !important; color: var(--ink) !important;
   border-radius: 36px; position: relative; z-index: 2;
   margin-inline: max(0px, calc((100vw - 1500px) / 2));
 }
-:is(#products, #turnkey) h2, :is(#products, #turnkey) h3, :is(#products, #turnkey) h4, #faq h2, #faq summary { color: var(--ink) !important; }
-:is(#products, #turnkey) .section-head p, :is(#products, #turnkey) .price-note, #faq .faq-intro, #faq .faq-item p { color: var(--mute-l) !important; }
-:is(#products, #turnkey) .eyebrow, #faq .eyebrow { color: var(--mute-l) !important; }
-body.flow :is(#products, #turnkey) .price-folder {
+#products h2, #products h3, #products h4, #faq h2, #faq summary { color: var(--ink) !important; }
+#products .section-head p, #products .price-note, #faq .faq-intro, #faq .faq-item p { color: var(--mute-l) !important; }
+#products .eyebrow, #faq .eyebrow { color: var(--mute-l) !important; }
+body.flow #products .price-folder {
   background: var(--paper-w) !important; border: 1px solid var(--line-l) !important;
   box-shadow: 0 1px 2px #06080f0d, 0 12px 30px -20px #06080f33 !important; color: var(--ink) !important;
 }
-body.flow :is(#products, #turnkey) .price-folder::before { display: block !important; content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--blue); box-shadow: none; opacity: 0; transition: opacity .3s; }
-body.flow :is(#products, #turnkey) .price-folder:hover::before, body.flow :is(#products, #turnkey) .price-folder[open]::before { opacity: 1; }
-body.flow :is(#products, #turnkey) .price-folder:hover { border-color: #2443f066 !important; }
-body.flow :is(#products, #turnkey) .price-folder[open] { border-color: var(--blue) !important; }
-body.flow :is(#products, #turnkey) .price-folder summary, body.flow :is(#products, #turnkey) .price-folder h3 { color: var(--ink) !important; }
-body.flow :is(#products, #turnkey) .price-folder summary p { color: var(--mute-l) !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-number {
+body.flow #products .price-folder::before { display: block !important; content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--blue); box-shadow: none; opacity: 0; transition: opacity .3s; }
+body.flow #products .price-folder:hover::before, body.flow #products .price-folder[open]::before { opacity: 1; }
+body.flow #products .price-folder:hover { border-color: #2443f066 !important; }
+body.flow #products .price-folder[open] { border-color: var(--blue) !important; }
+body.flow #products .price-folder summary, body.flow #products .price-folder h3 { color: var(--ink) !important; }
+body.flow #products .price-folder summary p { color: var(--mute-l) !important; }
+body.flow #products .price-folder .folder-number {
   color: var(--blue) !important; background: var(--blue-soft); border-radius: 8px; padding: 4px 8px; font-family: inherit;
 }
-body.flow :is(#products, #turnkey) .price-folder .folder-price { color: var(--ink) !important; font-weight: 800 !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-plus { color: var(--blue) !important; font-size: 30px !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content { border-color: var(--line-l) !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content article { background: var(--cloud) !important; border: 1px solid var(--line-l) !important; color: var(--ink) !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content article p, body.flow :is(#products, #turnkey) .price-folder .folder-content article span { color: var(--mute-l) !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content strong { color: var(--blue) !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content a {
+body.flow #products .price-folder .folder-price { color: var(--ink) !important; font-weight: 800 !important; }
+body.flow #products .price-folder .folder-plus { color: var(--blue) !important; font-size: 30px !important; }
+body.flow #products .price-folder .folder-content { border-color: var(--line-l) !important; }
+body.flow #products .price-folder .folder-content article { background: var(--cloud) !important; border: 1px solid var(--line-l) !important; color: var(--ink) !important; }
+body.flow #products .price-folder .folder-content article p, body.flow #products .price-folder .folder-content article span { color: var(--mute-l) !important; }
+body.flow #products .price-folder .folder-content strong { color: var(--blue) !important; }
+body.flow #products .price-folder .folder-content a {
   color: #fff !important; background: var(--blue) !important; text-decoration: none !important;
   border-radius: 999px; padding: 9px 14px; display: inline-flex; width: max-content; font-weight: 700;
 }
@@ -1370,12 +1370,12 @@ body.flow .project-card-caption > span { color: var(--blue-hi) !important; }
 .guide-dots button[aria-current]::before { background: var(--blue) !important; border-color: var(--blue) !important; }
 @media (max-width: 700px) {
   .guide-bot::before { background: conic-gradient(#2443f0 calc(var(--p) * 360deg), #ffffff1a 0) !important; }
-  body.flow :is(#products, #turnkey), body.flow #faq { border-radius: 26px; }
+  body.flow #products, body.flow #faq { border-radius: 26px; }
   body.flow .instagram-feature { display: grid !important; max-width: 100%; }
 }
-body.flow :is(#products, #turnkey) .price-folder .folder-content article { padding: 24px 24px 22px !important; border-radius: 16px !important; display: grid; gap: 6px; align-content: start; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content article h4 { margin: 0 0 4px !important; }
-body.flow :is(#products, #turnkey) .price-folder .folder-content article a { margin-top: 10px; }
+body.flow #products .price-folder .folder-content article { padding: 24px 24px 22px !important; border-radius: 16px !important; display: grid; gap: 6px; align-content: start; }
+body.flow #products .price-folder .folder-content article h4 { margin: 0 0 4px !important; }
+body.flow #products .price-folder .folder-content article a { margin-top: 10px; }
 @media (max-width: 700px) {
   .guide-dots, .guide-rail { display: none !important; }
 }
