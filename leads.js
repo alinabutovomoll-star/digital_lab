@@ -69,13 +69,16 @@
       if (form.elements.website.value) return; // honeypot
 
       const f = form.elements;
-      const data = { name: f.name.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href };
+      const data = { name: f.name.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href, consent: f.consent.checked };
       let bad = null;
       for (const k of ["name", "contact", "task"]) {
         const ok = data[k].length >= f[k].minLength;
         f[k].setAttribute("aria-invalid", ok ? "false" : "true");
         if (!ok && !bad) bad = f[k];
       }
+      const chk = f.consent.closest("label");
+      chk.classList.toggle("is-bad", !data.consent);
+      if (!bad && !data.consent) { say("Для отправки нужно согласие на обработку персональных данных.", false); f.consent.focus(); return; }
       if (bad) { say("Заполните, пожалуйста, все поля.", false); bad.focus(); return; }
 
       const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЗадача: " + data.task;
