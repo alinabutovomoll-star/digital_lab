@@ -258,16 +258,6 @@ const dialog = $("#detail-dialog"),
 let activeCase,
   index = 0,
   opener;
-function telegram(topic) {
-  return (
-    "https://t.me/alinaaa_ss?text=" +
-    encodeURIComponent(
-      "Привет, Алина! Хочу обсудить проект с Digital Lab. Интересует: " +
-        topic.toLowerCase() +
-        ".",
-    )
-  );
-}
 const shots = (c) => c.photos || c.images;
 function showImage() {
   const c = cases[activeCase],
@@ -279,9 +269,9 @@ function showImage() {
     const src = `assets/${list[index].slice(6)}.mp4`;
     const holder = $("#gallery-image");
     const v = document.createElement("video");
-    Object.assign(v, { src, controls: true, autoplay: true, muted: false, loop: true, playsInline: true, poster: `assets/${list[index].slice(6)}-poster.jpg` });
+    Object.assign(v, { src, controls: true, autoplay: !reduced.matches, muted: false, loop: true, playsInline: true, poster: `assets/${list[index].slice(6)}-poster.jpg` });
     v.volume = 0.6;
-    v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+    if (!reduced.matches) v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
     v.id = "gallery-image";
     v.className = "pd-photo";
     holder.replaceWith(v);
@@ -346,7 +336,7 @@ $$("[data-case]").forEach(
             : `<button type="button" data-i="${i}" aria-label="Фото ${i + 1}" style="background-image:url(assets/${x}.webp)"></button>`,
         )
         .join("");
-      content.innerHTML = `<div class="pd${c.photos ? "" : " pd-screens"}"><div class="pd-stage">${media}<button type="button" class="pd-nav pd-prev" id="gallery-prev" aria-label="Предыдущее изображение">←</button><button type="button" class="pd-nav pd-next" id="gallery-next" aria-label="Следующее изображение">→</button><span class="pd-count" id="gallery-count" aria-live="polite"></span></div><div class="pd-info"><span class="pd-chip">${c.category}</span><h2 id="detail-title">${c.title}</h2><p>${c.description}</p><div class="pd-thumbs">${thumbs}</div><div class="pd-actions"><a class="pd-cta" href="${telegram(c.interest)}" target="_blank" rel="noopener">Обсудить похожий продукт <b>↗</b></a><a id="original-image" class="pd-link" target="_blank" rel="noopener">Открыть в полном размере</a></div></div></div>`;
+      content.innerHTML = `<div class="pd${c.photos ? "" : " pd-screens"}"><div class="pd-stage">${media}<button type="button" class="pd-nav pd-prev" id="gallery-prev" aria-label="Предыдущее изображение">←</button><button type="button" class="pd-nav pd-next" id="gallery-next" aria-label="Следующее изображение">→</button><span class="pd-count" id="gallery-count" aria-live="polite"></span></div><div class="pd-info"><span class="pd-chip">${c.category}</span><h2 id="detail-title">${c.title}</h2><p>${c.description}</p><div class="pd-thumbs">${thumbs}</div><div class="pd-actions"><a class="pd-cta" href="#contact" data-goal="cta_click" data-place="work-dialog">Обсудить похожий продукт <b>↗</b></a><a id="original-image" class="pd-link" target="_blank" rel="noopener">Открыть в полном размере</a></div></div></div>`;
       $$(".pd-thumbs button").forEach((t) => (t.onclick = () => { index = Number(t.dataset.i); showImage(); }));
       $("#gallery-prev").onclick = () => step(-1);
       $("#gallery-next").onclick = () => step(1);
@@ -357,6 +347,13 @@ $$("[data-case]").forEach(
     }),
 );
 $("#close-dialog").onclick = () => dialog.close();
+dialog.addEventListener("click", (e) => {
+  const cta = e.target.closest?.(".pd-cta");
+  if (!cta) return;
+  e.preventDefault();
+  dialog.close();
+  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+});
 dialog.addEventListener("close", () => {
   dialog.querySelectorAll("video").forEach((v) => v.pause());
   document.body.classList.remove("dialog-open");
