@@ -230,3 +230,207 @@ body.flow section .section-head .eyebrow::before, .flow-eyebrow i {
   width: 34px !important; height: 2px !important;
 }
 @media (max-width: 700px) { .flow-layers > .mercury-layer { opacity: .72; } }
+
+
+/* =====================================================================
+   bydigitallab.ru — патч Марии #34 (кнопки + воздух), 29.10.2026
+   Для Максима. Ветка feat/cta-form-packages-v2. На прод не катим без ок Алины.
+
+   КУДА: в самый КОНЕЦ premium.css (он грузится последним), после всех
+   существующих правил. Если не хочешь трогать premium.css — отдельный
+   buttons.css и <link> строго ПОСЛЕ premium.css. Инлайн-<style> в index.html
+   этот патч не перебьёт (он выше по порядку, но у нас специфичность выше
+   и !important, так что порядок внутри index.html не важен).
+   HTML менять не нужно, только CSS (классы уже есть).
+
+   ПРИНЦИП (один на весь сайт):
+   ОРАНЖЕВЫЙ сплошной  = «оставить заявку / написать нам». Главное действие
+                         в зоне видимости. На экране не больше одной оранжевой
+                         кнопки в зоне (в пакетах — только у «Бизнес»).
+   СИНИЙ сплошной      = «узнать больше / перейти дальше по сайту»
+                         (ссылки «Изучить стоимость», папки в «Продуктовой линейке»).
+   КОНТУР (outline)    = вторичное действие рядом с главным
+                         (hero «заявка на сайте», пакеты «Старт»/«Под ключ», Instagram).
+
+   Где что:
+   - nav «Получить оценку»                  оранжевая
+   - hero «Получить оценку за 1 день»        оранжевая; «Оставить заявку на сайте» контур
+   - «Почему Digital Lab» → «Изучить стоимость»  синяя
+   - пакеты: «Бизнес» оранжевая, «Старт» и «Под ключ» контур
+   - кнопка отправки формы                   оранжевая
+   - «Получить оценку в Telegram» (контакты) оранжевая; «Портфолио в Instagram» контур
+   - липкая кнопка Telegram (телефон)        оранжевая
+   - кнопки внутри папок «Продуктовой линейки» — НЕ ТРОГАЕМ, как в проде (синие)
+
+   КОНТРАСТ (WCAG, посчитано):
+   - текст #06080F на оранжевом #EA6A25: 6.3:1 (белый давал 3.2:1, не проходит)
+   - белый на синем #2443F0: 6.7:1; на hover #1A32C8: 9.0:1
+   - текст #F4F2ED на контурной кнопке (фон #06080F/#0E1220): 16:1; граница кнопки 3:1+
+   - оранжевый #EA6A25 как цвет текста/иконки на #0E1220: 5.9:1
+   ===================================================================== */
+
+:root {
+  --cta:        #EA6A25;  /* = --amber из premium.css */
+  --cta-hi:     #FF8A3D;  /* hover */
+  --cta-ink:    #06080F;  /* текст на оранжевом */
+  --go:         #2443F0;  /* = --sapphire */
+  --go-deep:    #1A32C8;
+}
+
+/* 0) База для всех кнопок: спокойнее, без «блика-проезда» и свечения */
+html body.flow .btn,
+html body.flow .pill,
+html body.flow .sticky-tg {
+  font-family: var(--font);
+  font-weight: 600;
+  letter-spacing: -.005em;
+  border-radius: 99px;
+  min-height: 48px;
+  transition: background .25s ease, border-color .25s ease, color .25s ease, transform .25s ease !important;
+}
+html body.flow .btn::after,
+html body.flow .pill::after { display: none !important; }
+html body.flow .btn:active, html body.flow .pill:active, html body.flow .sticky-tg:active { transform: scale(.98); }
+
+/* 1) ОРАНЖЕВЫЕ — главный CTA */
+html body.flow .pill.primary,
+html body.flow .flow-hero .hero-actions .btn.primary,
+html body.flow .pkg--rec .btn,
+html body.flow .lead-form .btn.primary,
+html body.flow #contact .contact-actions .btn.wine,
+html body.flow .sticky-tg {
+  background: var(--cta) !important;
+  background-image: none !important;
+  border: 1.5px solid var(--cta) !important;
+  color: var(--cta-ink) !important;
+  box-shadow: 0 10px 28px -14px rgba(234, 106, 37, .7) !important;
+}
+html body.flow .pill.primary:hover,
+html body.flow .flow-hero .hero-actions .btn.primary:hover,
+html body.flow .pkg--rec .btn:hover,
+html body.flow .lead-form .btn.primary:hover,
+html body.flow #contact .contact-actions .btn.wine:hover,
+html body.flow .sticky-tg:hover {
+  background: var(--cta-hi) !important;
+  background-image: none !important;
+  border-color: var(--cta-hi) !important;
+  color: var(--cta-ink) !important;
+  box-shadow: 0 14px 34px -14px rgba(255, 138, 61, .8) !important;
+}
+
+/* 2) СИНИЕ — «узнать больше / дальше по сайту» (карточка «Почему Digital Lab») */
+html body.flow .flow-card .btn.primary {
+  background: var(--go) !important;
+  background-image: none !important;
+  border: 1.5px solid var(--go) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+html body.flow .flow-card .btn.primary:hover {
+  background: var(--go-deep) !important;
+  border-color: var(--go-deep) !important;
+  box-shadow: none !important;
+}
+/* кнопки в папках «Продуктовой линейки» (#products …) premium.css уже красит синим — оставляем */
+
+/* 3) КОНТУРНЫЕ — вторичные */
+html body.flow .flow-hero .hero-actions .btn:not(.primary),
+html body.flow .pkg:not(.pkg--rec) .btn,
+html body.flow .btn.instagram-cta {
+  background: transparent !important;
+  background-image: none !important;
+  border: 1.5px solid rgba(244, 242, 237, .5) !important;
+  color: #F4F2ED !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+html body.flow .flow-hero .hero-actions .btn:not(.primary):hover,
+html body.flow .pkg:not(.pkg--rec) .btn:hover,
+html body.flow .btn.instagram-cta:hover {
+  background: rgba(244, 242, 237, .08) !important;
+  border-color: var(--cta-hi) !important;
+  color: #fff !important;
+}
+
+/* 4) Фокус с клавиатуры: видно на любом фоне */
+html body.flow .btn:focus-visible,
+html body.flow .pill:focus-visible,
+html body.flow .sticky-tg:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* 5) Липкая кнопка (телефон): компактнее и без тяжёлой тени */
+@media (max-width: 700px) {
+  html body.flow .sticky-tg { min-height: 52px; font-size: 16px; box-shadow: 0 12px 28px -12px rgba(0, 0, 0, .8) !important; }
+}
+
+/* 6) HERO: меньше слов, больше воздуха ------------------------------ */
+html body.flow .flow-hero h1 {
+  font-weight: 600 !important;
+  font-size: clamp(40px, 5.4vw, 84px) !important;
+  line-height: 1.03 !important;
+  letter-spacing: -.035em !important;
+  max-width: 13em;
+  margin-bottom: 0;
+}
+html body.flow .flow-hero .hero-copy {
+  margin-top: clamp(20px, 2.4vw, 32px);
+  max-width: 34em;
+  font-size: clamp(17px, 1.5vw, 20px) !important;
+  line-height: 1.5;
+  color: var(--muted-on-dark);
+}
+html body.flow .flow-hero .hero-copy b { color: #fff !important; font-weight: 500; }
+html body.flow .flow-hero .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(28px, 3.4vw, 44px) !important;
+}
+html body.flow .flow-hero .hero-actions .btn { padding: 15px 28px; font-size: 16px; }
+html body.flow .flow-hero .hero-note {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-on-dark);
+  max-width: 34em;
+}
+html body.flow .flow-hero .eyebrow { margin-bottom: clamp(16px, 2vw, 24px); }
+
+@media (max-width: 560px) {
+  html body.flow .flow-hero h1 { font-size: clamp(2.1rem, 10.5vw, 2.9rem) !important; line-height: 1.05 !important; }
+  html body.flow .flow-hero .hero-copy { font-size: 16px !important; }
+  html body.flow .flow-hero .hero-actions { flex-direction: column; align-items: stretch; margin-top: 24px !important; }
+  html body.flow .flow-hero .hero-actions .btn { width: 100%; text-align: center; justify-content: center; }
+}
+
+/* 7) ПАКЕТЫ: воздух и иерархия ------------------------------------ */
+html body.flow #packages { padding-top: clamp(72px, 9vw, 130px); padding-bottom: clamp(72px, 9vw, 130px); }
+html body.flow #packages .section-head { margin-bottom: clamp(36px, 5vw, 64px); }
+html body.flow #packages .section-head h2 {
+  font-size: clamp(30px, 4.2vw, 60px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -.03em;
+  max-width: 14em;
+}
+html body.flow #packages .section-head p { margin-top: 18px; max-width: 32em; color: var(--muted-on-dark); font-size: clamp(16px, 1.4vw, 18px); line-height: 1.55; }
+
+.pkg-grid { gap: clamp(14px, 1.6vw, 22px); align-items: stretch; }
+.pkg { padding: clamp(28px, 3vw, 44px); border-radius: 28px; }
+.pkg h3 { font-size: clamp(24px, 2.2vw, 30px); font-weight: 600; margin-bottom: 10px; }
+.pkg-for { font-size: 15px; line-height: 1.55; margin-bottom: 26px; }
+.pkg-price { font-size: clamp(34px, 3.4vw, 46px); font-weight: 600; letter-spacing: -.035em; margin-bottom: 26px; padding-bottom: 26px; border-bottom: 1px solid var(--line); }
+.pkg ul { gap: 14px; margin-bottom: 26px; font-size: 15px; line-height: 1.5; }
+.pkg-not { margin-bottom: 30px; font-size: 13px; line-height: 1.5; }
+/* рекомендуемый: тонкая рамка и тег в бренд-оранжевом, чтобы связать с его кнопкой */
+.pkg--rec { border-color: rgba(234, 106, 37, .7); box-shadow: 0 0 0 1px rgba(234, 106, 37, .7) inset, 0 30px 60px -40px rgba(234, 106, 37, .5); }
+.pkg-tag { background: var(--cta); color: var(--cta-ink); font-weight: 600; }
+/* галочки — спокойный нейтральный светло-синий уже ок (5.9:1); кнопка внизу карточки */
+html body.flow .pkg .btn { margin-top: auto; align-self: stretch; text-align: center; justify-content: center; padding: 15px 24px; font-size: 16px; }
+
+.pkg-cta-note { margin-top: 36px; font-size: clamp(17px, 1.6vw, 20px); font-weight: 500; }
+.pkg-note, .pkg-nav { max-width: 40em; }
+.pkg-always { margin-top: 48px; }
+@media (max-width: 480px) { .pkg { padding: 26px 22px; } .pkg-price { font-size: 34px; } }
