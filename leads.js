@@ -62,6 +62,12 @@
       status.className = "lead-status " + (ok ? "is-ok" : "is-err");
       if (html) status.innerHTML = html; else status.textContent = text;
     };
+    // кнопка неактивна, пока не отмечено согласие
+    const submitBtn = form.querySelector("button[type=submit]");
+    const syncSubmit = () => { if (submitBtn) submitBtn.disabled = !form.elements.consent.checked; };
+    form.elements.consent.addEventListener("change", syncSubmit);
+    form.addEventListener("reset", () => setTimeout(syncSubmit, 0));
+    syncSubmit();
     const tgLink = (text) => CONFIG.TG_URL + "?text=" + encodeURIComponent(text);
 
     form.addEventListener("submit", async (e) => {
@@ -71,7 +77,7 @@
       const f = form.elements;
       const data = { name: f.name.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href, consent: f.consent.checked };
       let bad = null;
-      for (const k of ["name", "contact", "task"]) {
+      for (const k of ["name", "contact"]) {
         const ok = data[k].length >= f[k].minLength;
         f[k].setAttribute("aria-invalid", ok ? "false" : "true");
         if (!ok && !bad) bad = f[k];
@@ -79,9 +85,9 @@
       const chk = f.consent.closest("label");
       chk.classList.toggle("is-bad", !data.consent);
       if (!bad && !data.consent) { say("Для отправки нужно согласие на обработку персональных данных.", false); f.consent.focus(); return; }
-      if (bad) { say("Заполните, пожалуйста, все поля.", false); bad.focus(); return; }
+      if (bad) { say("Заполните, пожалуйста, имя и контакт.", false); bad.focus(); return; }
 
-      const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЗадача: " + data.task;
+      const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЧем занимаются: " + (data.task || "не указано");
 
       // Резервный путь: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
       // Ссылка открывается по клику посетителя (жест пользователя), без window.open после await:
@@ -96,7 +102,7 @@
         const a = document.createElement("a");
         a.href = url; a.target = "_blank"; a.rel = "noopener";
         a.className = "btn primary lead-open";
-        a.textContent = "Открыть Telegram";
+        a.textContent = "Написать в Telegram";
         a.dataset.goal = "tg_click"; a.dataset.place = "form-fallback";
         status.append(p, document.createElement("br"), a);
         form.reset();
@@ -114,11 +120,11 @@
           if (!r.ok) throw new Error(r.status);
           goal("form_submit");
           form.reset();
-          say("Спасибо! Получили заявку, вернёмся с вариантом, сроком и ценой в рабочее время.", true);
+          say("Спасибо! Напишем вам в течение рабочего дня.", true);
         } catch (err) {
           // endpoint недоступен или вернул ошибку: не теряем заявку
           openTelegram("Форма сейчас недоступна, но заявка не потеряна: нажмите кнопку, откроется Telegram с готовым текстом, останется нажать «Отправить».");
-        } finally { btn.disabled = false; }
+        } finally { syncSubmit(); }
         return;
       }
 

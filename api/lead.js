@@ -3,7 +3,7 @@
 // Тело: JSON {name, contact, task, page, website(honeypot), consent?}
 
 const LIMITS = { name: 80, contact: 120, task: 1200, page: 300 };
-const MIN = { name: 2, contact: 3, task: 5 };
+const MIN = { name: 2, contact: 3, task: 0 };
 const RATE = { windowMs: 10 * 60 * 1000, perIp: 3, global: 30 };
 const hits = new Map(); // ip -> [timestamps]; живёт в пределах тёплого инстанса (best-effort)
 let globalHits = [];
@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
 
   const text =
     "Заявка с сайта bydigitallab.ru\n" +
-    "Имя: " + d.name + "\nКонтакт: " + d.contact + "\nЗадача: " + d.task +
+    "Имя: " + d.name + "\nКонтакт: " + d.contact + "\nЧем занимаются: " + (d.task || "не указано") +
     (d.page ? "\nСтраница: " + d.page : "") +
     "\nСогласие на обработку ПД: да (уведомление под формой)";
 
