@@ -4,8 +4,8 @@
   "use strict";
 
   const CONFIG = {
-    // TODO(Алина): ID счётчика Яндекс.Метрики. Пока null: счётчик не грузится, цели только пишутся в консоль при ?debug_goals
-    YM_ID: null,
+    // ID счётчика Яндекс.Метрики (bydigitallab.ru). Данные принимаются только с указанных в настройках адресов, превью не засчитываются
+    YM_ID: 113868406,
     // Vercel-функция api/lead.js (Илья). При ошибке или недоступности открываем Telegram с текстом заявки
     FORM_ENDPOINT: "/api/lead",
     TG_URL: "https://t.me/alinaaa_ss",
@@ -14,7 +14,8 @@
   const DEBUG = /[?&]debug_goals\b/.test(location.search);
 
   // ---- Метрика ------------------------------------------------------------
-  if (CONFIG.YM_ID) {
+  const ymLoaded = !!document.querySelector('script[src*="mc.yandex.ru/metrika/tag.js"]');
+  if (CONFIG.YM_ID && !ymLoaded) {
     window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
     window.ym.l = Date.now();
     const s = document.createElement("script");
