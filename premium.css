@@ -291,7 +291,7 @@ html body.flow:not(#v4):not(#v4) .pkg .btn { align-self: flex-start; }
 
 /* Бизнес под ключ: без светлой подложки, секция лежит на тёмном фоне страницы */
 html body.flow:not(#v4) #turnkey, html body.flow:not(#v4) #turnkey > .w, html body.flow:not(#v4) #turnkey .section-head, html body.flow:not(#v4) #turnkey .pkg-grid {
-  background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; margin-inline: 0; color: #f4f2ed;
+  background: transparent !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; color: #f4f2ed;
 }
 html body.flow:not(#v4) #turnkey h2 { color: #f4f2ed !important; }
 html body.flow:not(#v4) #turnkey .section-head p { color: #9aa3b2 !important; }
