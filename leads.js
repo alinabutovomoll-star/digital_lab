@@ -43,18 +43,16 @@
   });
 
   // ---- Форма --------------------------------------------------------------
+  const form = document.getElementById("lead-form");
   if (form) {
     const status = document.getElementById("leadStatus");
     const say = (text, ok, html) => {
       status.className = "lead-status " + (ok ? "is-ok" : "is-err");
       if (html) status.innerHTML = html; else status.textContent = text;
     };
-    // кнопка неактивна, пока не отмечено согласие
     const submitBtn = document.querySelector('button[type=submit][form="lead-form"]');
-    const syncSubmit = () => { if (submitBtn) submitBtn.disabled = !form.elements.consent.checked; };
-    form.elements.consent.addEventListener("change", syncSubmit);
-    form.addEventListener("reset", () => setTimeout(syncSubmit, 0));
-    syncSubmit();
+    const syncSubmit = () => { if (submitBtn) submitBtn.disabled = false; };
+    form.elements.consent.addEventListener("change", () => form.elements.consent.closest("label").classList.remove("is-bad"));
     const tgLink = (text) => CONFIG.TG_URL + "?text=" + encodeURIComponent(text);
 
     form.addEventListener("submit", async (e) => {
@@ -62,19 +60,19 @@
       if (form.elements.website.value) return; // honeypot
 
       const f = form.elements;
-      const data = { business: f.business.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href, consent: f.consent.checked };
+      const data = { name: f.name.value.trim(), business: f.business.value.trim(), contact: f.contact.value.trim(), task: f.task.value.trim(), page: location.href, consent: f.consent.checked };
       let bad = null;
-      for (const k of ["business", "contact"]) {
+      for (const k of ["name", "contact"]) {
         const ok = data[k].length >= f[k].minLength;
         f[k].setAttribute("aria-invalid", ok ? "false" : "true");
         if (!ok && !bad) bad = f[k];
       }
       const chk = f.consent.closest("label");
       chk.classList.toggle("is-bad", !data.consent);
-      if (!bad && !data.consent) { say("Для отправки нужно согласие на обработку персональных данных.", false); f.consent.focus(); return; }
-      if (bad) { say("Заполните, пожалуйста, контакт и чем занимаетесь.", false); bad.focus(); return; }
+      if (bad) { say("Заполните, пожалуйста, имя и контакт (Telegram или телефон).", false); bad.focus(); return; }
+      if (!data.consent) { say("Отметьте согласие на обработку персональных данных, чтобы отправить заявку.", false); f.consent.focus(); return; }
 
-      const message = "Заявка с сайта bydigitallab.ru\nКонтакт: " + data.contact + "\nЧем занимаются: " + data.business + "\nЗапрос: " + (data.task || "не указано");
+      const message = "Заявка с сайта bydigitallab.ru\nИмя: " + data.name + "\nКонтакт: " + data.contact + "\nЧем занимаются: " + (data.business || "не указано") + "\nЗапрос: " + (data.task || "не указано");
 
       // Резервный путь: готовая заявка открывается в Telegram, остаётся нажать «Отправить»
       // Ссылка открывается по клику посетителя (жест пользователя), без window.open после await:

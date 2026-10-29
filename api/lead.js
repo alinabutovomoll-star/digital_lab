@@ -1,9 +1,9 @@
 // POST /api/lead: заявка с формы -> сообщение в Telegram.
 // Env (только в Vercel Environment Variables): TG_BOT_TOKEN, TG_CHAT_ID, опц. ALLOWED_ORIGINS (через запятую), DRY_RUN=1
-// Тело: JSON {business, contact, task, page, website(honeypot), consent?}
+// Тело: JSON {name, business, contact, task, page, website(honeypot), consent?}
 
-const LIMITS = { business: 200, contact: 120, task: 1200, page: 300 };
-const MIN = { business: 2, contact: 3, task: 0 };
+const LIMITS = { name: 100, business: 200, contact: 120, task: 1200, page: 300 };
+const MIN = { name: 2, business: 0, contact: 3, task: 0 };
 const RATE = { windowMs: 10 * 60 * 1000, perIp: 3, global: 30 };
 const hits = new Map(); // ip -> [timestamps]; живёт в пределах тёплого инстанса (best-effort)
 let globalHits = [];
@@ -43,6 +43,7 @@ module.exports = async function handler(req, res) {
   if (body.website) return send(200, { ok: true });
 
   const d = {
+    name: clean(body.name, LIMITS.name),
     business: clean(body.business, LIMITS.business),
     contact: clean(body.contact, LIMITS.contact),
     task: clean(body.task, LIMITS.task),
@@ -56,14 +57,14 @@ module.exports = async function handler(req, res) {
   const ip = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
   if (rateLimited(ip, now)) return send(429, { ok: false, error: "rate_limit" });
 
-  const key = d.contact + "|" + d.business + "|" + d.task;
+  const key = d.name + "|" + d.contact + "|" + d.business + "|" + d.task;
   if (recent.has(key) && now - recent.get(key) < RATE.windowMs) return send(200, { ok: true });
   recent.set(key, now);
   if (recent.size > 500) recent.clear();
 
   const text =
     "Заявка с сайта bydigitallab.ru\n" +
-    "Контакт: " + d.contact + "\nЧем занимаются: " + d.business + "\nЗапрос: " + (d.task || "не указано") +
+    "Имя: " + d.name + "\nКонтакт: " + d.contact + "\nЧем занимаются: " + (d.business || "не указано") + "\nЗапрос: " + (d.task || "не указано") +
     (d.page ? "\nСтраница: " + d.page : "") +
     "\nСогласие на обработку ПД: да";
 
