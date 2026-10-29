@@ -1515,3 +1515,17 @@ body.flow .foot-seo { flex-basis: 100%; margin: 10px 0 0; font-size: 12px; line-
 body.flow .foot { flex-wrap: wrap; }
 
 @media (max-width: 700px) { .flow-hero .hero-actions { margin-top: auto !important; } }
+
+/* ---- footer: one baseline, one type size ------------------------------- */
+body.flow footer .foot { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 12px 32px; font-size: 12px; line-height: 1.5; min-width: 0; }
+body.flow footer .foot > a { flex: 0 0 auto; display: flex; align-items: center; }
+body.flow footer .foot > a img { display: block; }
+body.flow footer .foot > span,
+body.flow footer .foot > .foot-seo { margin: 0; font-size: 12px; line-height: 1.5; color: #8a93a3; min-width: 0; overflow-wrap: break-word; word-break: normal; }
+body.flow footer .foot > span { flex: 0 0 auto; white-space: nowrap; }
+body.flow footer .foot > .foot-seo { flex: 1 1 0; max-width: 520px; text-align: right; }
+@media (max-width: 900px) {
+  body.flow footer .foot { flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+  body.flow footer .foot > span { white-space: normal; }
+  body.flow footer .foot > .foot-seo { flex: 0 0 auto; max-width: 100%; text-align: left; }
+}
