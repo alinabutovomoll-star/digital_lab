@@ -347,3 +347,13 @@ html body.flow:not(#v4) #turnkey .pkg { background: #0e1220 !important; }
 #turnkey .pkg .btn { margin-top: auto; align-self: flex-start; }
 @media (max-width: 900px) { #turnkey .pkg-grid { grid-template-columns: 1fr; } }
 @media (max-width: 480px) { #turnkey .pkg { padding: 24px; } }
+
+/* mobile fixes #97/#98: шапка и кнопки hero на узких экранах (320-420px) */
+@media (max-width: 420px) {
+  html body.flow:not(#v4):not(#v4):not(#v4):not(#v4) nav .nav { padding: 0 8px 0 12px !important; gap: 6px !important; grid-template-columns: auto auto 1fr !important; }
+  html body.flow:not(#v4):not(#v4):not(#v4):not(#v4) nav .brand img { width: 92px !important; }
+  html body.flow:not(#v4):not(#v4):not(#v4):not(#v4) nav .mobile-menu-toggle { min-width: 0 !important; padding: 0 9px !important; gap: 5px !important; font-size: 10px !important; justify-self: start !important; }
+  html body.flow:not(#v4):not(#v4):not(#v4):not(#v4) nav .pill.primary.nav-estimate { font-size: min(11px, 3.1vw) !important; padding: 10px min(12px, 3vw) !important; white-space: nowrap !important; }
+  html body.flow:not(#v4):not(#v4):not(#v4):not(#v4) .flow-hero .hero-actions .btn { font-size: min(13px, 3.4vw) !important; padding: 12px 8px !important; white-space: nowrap !important; }
+  html body.flow:not(#v4):not(#v4):not(#v4):not(#v4) .flow-hero .hero-actions { margin-top: 18px !important; }
+}

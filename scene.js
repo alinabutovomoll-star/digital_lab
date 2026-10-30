@@ -237,7 +237,7 @@ try {
     let wave = Math.sin(p * Math.PI) * 0.11;
     logo.position.set(
       m ? mix(0.3, -0.05, trans) : mix(2.65, -2.35, trans),
-      m ? mix(-0.38, -0.15, trans) : mix(0, -0.12, trans),
+      m ? mix(-0.18, -0.15, trans) : mix(0, -0.12, trans),
       0,
     );
     let mobileScale = height < 750 ? 0.69 : 0.82;
